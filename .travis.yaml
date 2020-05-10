@@ -1,0 +1,21 @@
+nguage: generic
+sudo: required
+
+services:
+    - docker
+before_install:
+    - docker build -t vikramjadhav/pdf-service-test -f ./server/Dockerfile.test ./server
+script:
+    - docker run -e CI=true vikramjadhav/pdf-service-test go test -v
+after_success:
+    - docker build -t vikramjadhav/pdf-service-client ./client
+    - docker build -t vikramjadhav/pdf-service-server ./server
+    - docker build -t vikramjadhav/pdf-service-nginx ./nginx
+    
+    # Login to dockerhub
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # push above crated images
+    - docker push vikramjadhav/pdf-service-client
+    - docker push vikramjadhav/pdf-service-server
+    - docker push vikramjadhav/pdf-service-nginx

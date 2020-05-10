@@ -1,0 +1,6 @@
+
+FROM golang:1.14-alpine
+WORKDIR /app
+COPY main_test.go .
+
+RUN go test -v
