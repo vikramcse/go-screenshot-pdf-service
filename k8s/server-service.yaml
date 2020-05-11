@@ -5,10 +5,8 @@ metadata:
   labels:
     app: server
 spec:
-  type: NodePort
   selector:
     app: server 
   ports:
     - port: 8001
       targetPort: 8001
-      nodePort: 30008
